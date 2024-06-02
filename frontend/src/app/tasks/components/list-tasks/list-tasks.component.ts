@@ -4,6 +4,8 @@ import { ServerService } from '../../../shared/services/server.service';
 import { TaskStatusDto } from '../../entities/task-status.entity';
 import { FadeInAnimation } from '../../../shared/animations/animations';
 import { Router } from '@angular/router';
+import { UiService } from '../../../shared/services/ui.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
     selector: 'app-list-tasks',
@@ -14,7 +16,7 @@ import { Router } from '@angular/router';
 export class ListTasksComponent implements OnInit {
     public tasks: TaskDto[] = [];
     private cursor: string | null = null;
-    private limit: number = 3;
+    private limit: number = 10;
     public statuses: TaskStatusDto[] = [];
     public ready: boolean = false;
     public loading: boolean = false;
@@ -22,7 +24,9 @@ export class ListTasksComponent implements OnInit {
     public eof: boolean = false;
 
     constructor(private server: ServerService,
-        private router: Router) { }
+        private router: Router,
+        public ui: UiService,
+        private notificationService: NotificationService) { }
 
     public async ngOnInit(): Promise<void> {
         await Promise.all([
@@ -81,7 +85,9 @@ export class ListTasksComponent implements OnInit {
             this.loading = true;
 
             await this.server.deleteTask(id);
-            await this.getTasks();
+
+            this.tasks = this.tasks.filter(task => task.id !== id);
+            this.notificationService.showSuccess('Task deleted');
         } catch (ex: any) {
             console.error(ex);
         } finally {

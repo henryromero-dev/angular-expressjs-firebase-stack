@@ -17,14 +17,18 @@ p {
     padding: 5px;
     border-radius: 5px;
     background-color: #16a3e4;
-    &--new {
+    width: 100px;
+    text-align: center;
+    &--pending {
         background-color: #16a3e4;
     }
-    &--in-progress {
-        background-color: #ff9800;
-    }
-    &--done {
+    &--completed {
         background-color: #4caf50;
+    }
+    /*
+    You can add more status classes here
+    &--new {
+        background-color: #ff9800;
     }
     &--canceled {
         background-color: #f44336;
@@ -40,5 +44,5 @@ p {
     }
     &--tested {
         background-color: #8bc34a;
-    }
+    }*/
 }

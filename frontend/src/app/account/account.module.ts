@@ -5,6 +5,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { AccountRoutingModule } from './account.routes';
 import { MaterialModule } from '../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @NgModule({
     declarations: [LoginComponent, RegisterComponent],
@@ -14,6 +15,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         MaterialModule,
         FormsModule,
         ReactiveFormsModule
+    ],
+    providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: {} } 
     ]
 })
 export class AccountModule { }

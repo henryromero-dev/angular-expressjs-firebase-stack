@@ -14,8 +14,8 @@ export namespace AuthController {
                 return res.status(400).json({ error: 'Invalid email format' });
             }
 
-            const userSnapshot = await db.collection('users').where('email', '==', email).get();
-            if (!userSnapshot.empty) {
+            let existsSnapshot = await db.collection('users').where('email', '==', email).get();
+            if (!existsSnapshot.empty) {
                 return res.status(400).json({ error: 'Email is already registered' });
             }
 
@@ -28,7 +28,11 @@ export namespace AuthController {
                 roleName: AppRoles.CLIENT
             });
 
-            res.status(201).json({ message: 'User registered' });
+            const userSnapshot = await db.collection('users').where('email', '==', email).get();
+            const user: any = { id: userSnapshot.docs[0].id, ...userSnapshot.docs[0].data() };
+            const accessToken = sign({user}, <string>process.env.SECRETE_TOKEN, { expiresIn: '24h' });
+
+            res.status(201).json({ message: 'User registered', accessToken });
         } catch (error: any) {
             res.status(500).json({ error: error.message });
         }
@@ -45,7 +49,7 @@ export namespace AuthController {
 
             const userSnapshot = await db.collection('users').where('email', '==', email).get();
             if (userSnapshot.empty) {
-                return res.status(400).json({ error: 'Email or password is incorrect' });
+                return res.status(201).json({ error: 'User does not exists', requireRegister: true});
             }
 
             const user: any = { id: userSnapshot.docs[0].id, ...userSnapshot.docs[0].data() };

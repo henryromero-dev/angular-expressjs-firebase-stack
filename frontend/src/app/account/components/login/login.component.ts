@@ -51,11 +51,10 @@ export class LoginComponent {
 
             this.loginDto.email = this.form.get('email')?.value;
 
-            await this.server.login(this.loginDto);
-
-            this.notificationService.showSuccess('Welcome');
-
-            this.router.navigate(['/']);
+            if (await this.server.login(this.loginDto)) {
+                this.notificationService.showSuccess('Welcome');
+                this.router.navigate(['/']);
+            }
         } catch (ex: any) {
             console.error(ex);
         } finally {

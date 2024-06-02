@@ -9,6 +9,8 @@ import { NotificationService } from './notification.service';
 import { CacheService } from './cache.service';
 import { TaskDto } from '../../tasks/entities/task.entity';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { RegisterComponent } from '../../account/components/register/register.component';
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +23,8 @@ export class ServerService {
     constructor(private http: HttpClient,
         private notificationService: NotificationService,
         private cache: CacheService,
-        private router: Router
+        private router: Router,
+        private dialog: MatDialog
     ) { 
         this.getUserFromToken();
 
@@ -40,26 +43,43 @@ export class ServerService {
                 this.handleError(ex);
             }) as any;
 
-            console.log(res);
-        } catch (ex) {
-            this.notificationService.showError(<string>ex);
-            throw ex;
-        }
-    }
-
-    public async login(login: LoginDto): Promise<void> {
-        try {
-            const res = await firstValueFrom(this.http.post(environment.API_URL + '/api/login', login))
-            .catch((ex: any) => {
-                this.handleError(ex);
-            }) as any;
-
             if (!res.accessToken) {
                 throw new Error(res.error);
             }
 
             localStorage.setItem('accessToken', res.accessToken);
             this.getUserFromToken();
+        } catch (ex) {
+            this.notificationService.showError(<string>ex);
+            throw ex;
+        }
+    }
+
+    public async login(login: LoginDto): Promise<boolean> {
+        try {
+            const res = await firstValueFrom(this.http.post(environment.API_URL + '/api/login', login))
+            .catch((ex: any) => {
+                this.handleError(ex);
+            }) as any;
+
+            if (res.requireRegister) {
+                this.dialog.open(RegisterComponent, {
+                    width: '512px',
+                    height: '400px',
+                    data: {
+                        login
+                    }
+                });
+
+                return false;
+            } else if (!res.accessToken) {
+                throw new Error(res.error);
+            }
+
+            localStorage.setItem('accessToken', res.accessToken);
+            this.getUserFromToken();
+
+            return true;
         } catch (ex) {
             this.notificationService.showError(<string>ex);
             throw ex;

@@ -6,6 +6,7 @@ import { TaskDto } from "../../entities/task.entity";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { TaskStatusDto } from "../../entities/task-status.entity";
 import { FadeInAnimation } from "../../../shared/animations/animations";
+import { UiService } from "../../../shared/services/ui.service";
 
 @Component({
     selector: 'app-edit-task',
@@ -24,8 +25,8 @@ export class EditTaskComponent implements OnInit {
     constructor(private server: ServerService,
         private router: Router,
         private route: ActivatedRoute,
-        private notificationService: NotificationService) {
-    }
+        private notificationService: NotificationService,
+        public ui: UiService) {}
 
 
     async ngOnInit(): Promise<void> {
@@ -52,10 +53,13 @@ export class EditTaskComponent implements OnInit {
     }
 
     private initForm(): void {
+        const taskStatus = this.statuses.find((status) => status.id === this.task.statusId);
+        const statusId = taskStatus?.name === 'completed' ? true : false;
+
         this.form = new FormGroup({
             title: new FormControl(this.task.title || '', Validators.required),
             description: new FormControl(this.task.description || '', Validators.required),
-            statusId: new FormControl(this.task.statusId || this.defaultStatus?.id, Validators.required),
+            statusId: new FormControl(statusId),
             visibility: new FormControl(this.task.visibility || '')
         });
     }
@@ -90,7 +94,7 @@ export class EditTaskComponent implements OnInit {
                 ...this.task,
                 title: this.form.value.title,
                 description: this.form.value.description,
-                statusId: this.form.value.statusId,
+                statusId: this.statuses.find((status) => status.name === (this.form?.value.statusId ? 'completed' : 'pending'))?.id || '',
                 visibility: this.form.value.visibility || ''
             }
 
@@ -112,6 +116,11 @@ export class EditTaskComponent implements OnInit {
 
     public cancel(): void {
         this.router.navigate(['/tasks']);
+    }
+
+    public get selectedStatus(): TaskStatusDto {
+        const status = this.form?.value.statusId ? 'completed' : 'pending';
+        return this.statuses.find((x) => x.name === status) || {} as TaskStatusDto;
     }
 
     private get defaultStatus(): TaskStatusDto {

@@ -24,39 +24,33 @@ export namespace Seeders {
     };
     export const LoadTaskStatuses = async () => {
         try {
-            const taskStatuses = [{ 
-                name: 'new', 
-                description: 'New',
-                sortOrder: 0
+            const taskStatuses = [{
+                name: 'pending',
+                description: 'Pending'
             }, {
-                name: 'in-progress',
-                description: 'In Progress',
-                sortOrder: 1
+                name: 'completed',
+                description: 'Completed'
+            }
+            // You can add more statuses here
+            /*,{ 
+                name: 'new', 
+                description: 'New'
             }, {
                 name: 'merge-request',
-                description: 'Merge Request',
-                sortOrder: 2
+                description: 'Merge Request'
             }, {
                 name: 'unit-test',
-                description: 'Unit Test',
-                sortOrder: 3
+                description: 'Unit Test'
             }, {
                 name: 'in-testing',
-                description: 'In Testing',
-                sortOrder: 4
+                description: 'In Testing'
             }, {
                 name: 'tested',
-                description: 'Tested',
-                sortOrder: 5
-            }, {
-                name: 'done',
-                description: 'Done',
-                sortOrder: 6
+                description: 'Tested'
             }, {
                 name: 'canceled',
-                description: 'Canceled',
-                sortOrder: 7
-            }];
+                description: 'Canceled'
+            }*/];
     
             for (const taskStatus of taskStatuses) {
                 const taskStatusesnapshot = await db.collection('taskStatuses').where('name', '==', taskStatus.name).get();

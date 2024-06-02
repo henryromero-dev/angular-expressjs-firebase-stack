@@ -14,3 +14,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .cursor-pointer {
     cursor: pointer;
 }
+
+.success-snackbar .mdc-snackbar__surface {
+    background-color: rgb(18, 158, 18) !important;
+    color: white;
+}
+
+.error-snackbar .mdc-snackbar__surface {
+    background-color: rgb(202, 32, 32) !important;
+    color: white;
+}

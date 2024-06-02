@@ -1,21 +1,21 @@
 <div class="d-flex flex-column login__container">
-    <form class="login__form d-flex flex-column m-auto p-4" [formGroup]="form" *ngIf="ready">
+    <form class="login__form d-flex flex-column m-auto p-sm-5 p-3" [formGroup]="form" *ngIf="ready">
         <div class="d-flex flex-column m-auto w-100">
             <h5 class="text--heading04">
                 Sign in
             </h5>
-            <p class="text--desktop03">
+            <p class="text--desktop03 text--mobile03">
                 Enter your email to sign in
             </p>
     
-            <mat-form-field class="w-100 text--desktop02 py-1 mt-4" appearance="outline" color="primary">
+            <mat-form-field class="w-100 text--desktop02 text--mobile02 py-1 mt-4" appearance="outline" color="primary">
                 <mat-label>Email</mat-label>
                 <input matInput formControlName="email" type="email" id="email" name="email" autocomplete="off">
             </mat-form-field>
     
             <div class="d-flex w-100">
-                <button class="w-100 text--desktop02 text-center py-1" color="primary" mat-raised-button (click)="login()">
-                    <div class="d-flex m-auto text-center text--desktop03 align-items-center">
+                <button class="w-100 text--desktop02 text--mobile02 text-center py-1" color="primary" mat-raised-button (click)="login()">
+                    <div class="d-flex m-auto text-center text--desktop03 text--mobile03 align-items-center">
                         <mat-icon class="me-2">login</mat-icon>
                         Sign in
                     </div>
@@ -23,7 +23,7 @@
             </div>
 
             <div class="d-flex w-100 mt-4">
-                <p class="text--desktop03 mx-auto">
+                <p class="text--desktop03 text--mobile03 mx-auto">
                     First time here? <a routerLink="/account/register">Create an account</a>
                 </p>
             </div>

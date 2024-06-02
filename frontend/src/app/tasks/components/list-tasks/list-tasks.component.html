@@ -1,97 +1,110 @@
-<div class="d-flex flex-column w-100 p-5">
+<div class="d-flex flex-column w-100 p-md-5 p-3">
     <div class="d-flex flex-column w-100">
-        <div class="d-flex w-100 align-items-center">
+        <div class="d-flex flex-wrap w-100 align-items-center">
             <mat-icon class="text--heading04">list</mat-icon>
             <h5 class="text--heading04 mb-0">
                 Tasks
             </h5>
-            <button class="text--desktop02 text-center py-1 ms-auto" color="primary" mat-raised-button (click)="createTask()">
+            <button class="text--desktop02 text--mobile03 text-center py-1 ms-auto" color="primary" mat-raised-button (click)="createTask()">
                 <div class="d-flex m-auto text-center align-items-center">
-                    <mat-icon class="me-0 h-auto text--desktop03">add</mat-icon>
-                    <div class="text--desktop03">
+                    <mat-icon class="me-0 h-auto text--desktop03 text--mobile03">add</mat-icon>
+                    <div class="text--desktop03 text--mobile03">
                         Create task
                     </div>
                 </div>
             </button>
         </div>
-        <p class="text--desktop03 text--lightgrey01">
+        <p class="text--desktop03 text--mobile03 text--lightgrey01">
             Here you can see all your tasks
         </p>
     </div>
 
-    <div class="d-flex flex-column w-100 mt-5">
+    <div class="d-flex flex-column w-100 mt-md-5 mt-3">
         <div class="d-flex w-100 align-items-center task__header py-3 my-2">
-            <div class="col-3 px-3">
-                <p class="text--desktop03">
+            <div class="col-md-3 col-4 px-3">
+                <p class="text--desktop03 text--mobile03">
                     Title
                 </p>
             </div>
-            <div class="col-3 px-3">
-                <p class="text--desktop03">
+            <div class="col-md-2 col-4 px-3" *ngIf="!ui.isMobileWidth">
+                <p class="text--desktop03 text--mobile03">
                     Description
                 </p>
             </div>
-            <div class="col-3 px-3">
-                <p class="text--desktop03">
+            <div class="col-md-2 col-4 px-3">
+                <p class="text--desktop03 text--mobile03">
                     Status
                 </p>
             </div>
-            <div class="col-3 px-3">
-                <p class="text--desktop03">
+            <div class="col-md-2 col-4 px-3" *ngIf="!ui.isMobileWidth">
+                <p class="text--desktop03 text--mobile03">
+                    Created on
+                </p>
+            </div>
+            <div class="col-md-3 col-4 px-3">
+                <p class="text--desktop03 text--mobile03">
                     Actions
                 </p>
             </div>
         </div>
         <div class="d-flex flex-column w-100" *ngIf="(!loading && ready) || tasks.length" [@fadeIn]>
             <div class="d-flex w-100 align-items-center task__item py-2 my-2" *ngFor="let task of tasks">
-                <div class="col-3 px-3">
-                    <p class="text--desktop03">
+                <div class="col-md-3 col-4 px-3">
+                    <p class="text--desktop03 text--mobile02">
                         {{ task.title }}
                     </p>
                 </div>
-                <div class="col-3 px-3">
-                    <p class="text--desktop03">
+                <div class="col-md-2 px-3" *ngIf="!ui.isMobileWidth">
+                    <p class="text--desktop03 text--mobile02">
                         {{ task.description }}
                     </p>
                 </div>
-                <div class="col-3 px-3 d-flex align-items-center">
-                    <p class="text--desktop04 d-block task__status px-3 py-2 task__status--{{getStatusById(task.statusId).name}}">
+                <div class="col-md-2 col-4 px-3 d-flex align-items-center">
+                    <p class="text--desktop04 text--mobile03 d-block task__status py-2 task__status--{{getStatusById(task.statusId).name}}">
                         {{ getStatusById(task.statusId).description }}
                     </p>
-                    <small class="text--desktop05 ms-2">
-                        ({{task.updatedOn || task.createdOn | date: 'dd/MM/yyyy HH:mm'}})
+                </div>
+                <div class="col-md-2 col-4 px-3 d-flex align-items-center" *ngIf="!ui.isMobileWidth">
+                    <small class="text--desktop03 text--mobile03 ms-2" *ngIf="!ui.isMobileWidth">
+                        {{task.createdOn | date: 'dd/MM/yyyy HH:mm'}}
                     </small>
                 </div>
-                <div class="col-3 px-3 d-flex align-items-center">
-                    <button class="text--desktop02 text-center py-1" color="primary" mat-raised-button (click)="editTask(task.id)">
+                <div class="col-md-3 col-4 px-3 d-flex align-items-center" *ngIf="!ui.isMobileWidth">
+                    <button class="text--desktop02 text--mobile03 text-center py-1" color="primary" mat-raised-button (click)="editTask(task.id)">
                         <div class="d-flex m-auto text-center align-items-center">
-                            <mat-icon class="me-0 h-auto text--desktop03">edit</mat-icon>
-                            <div class="text--desktop03">
+                            <mat-icon class="me-0 h-auto text--desktop03 text--mobile03">edit</mat-icon>
+                            <div class="text--desktop03 text--mobile03">
                                 Edit
                             </div>
                         </div>
                     </button>
-                    <button class="text--desktop02 text-center py-1 ms-2" color="accent" mat-raised-button (click)="deleteTask(task.id)">
+                    <button class="text--desktop02 text--mobile03 text-center py-1 ms-2" color="accent" mat-raised-button (click)="deleteTask(task.id)">
                         <div class="d-flex m-auto text-center align-items-center">
-                            <mat-icon class="me-0 h-auto text--desktop03">delete</mat-icon>
-                            <div class="text--desktop03">
+                            <mat-icon class="me-0 h-auto text--desktop03 text--mobile03">delete</mat-icon>
+                            <div class="text--desktop03 text--mobile03">
                                 Delete
                             </div>
                         </div>
                     </button>
                 </div>
+                <div class="col-md-3 col-4 px-3 d-flex align-items-center" *ngIf="ui.isMobileWidth">
+                    <div class="mx-auto d-flex">
+                        <mat-icon class="me-0 h-auto text--desktop03 text--mobile01 mx-2" (click)="editTask(task.id)">edit</mat-icon>
+                        <mat-icon class="me-0 h-auto text--desktop03 text--mobile01 mx-2" (click)="deleteTask(task.id)">delete</mat-icon>
+                    </div>
+                </div>
             </div>
             <div class="d-flex w-100 align-items-center task__item py-2 my-2" *ngIf="isListEmpty">
                 <div class="col-12 px-3 text-center py-2">
-                    <p class="text--desktop03">
+                    <p class="text--desktop03 text--mobile02">
                         No tasks found
                     </p>
                 </div>
             </div>
             <div class="d-flex w-100 mt-3">
-                <button class="text--desktop02 text-center py-1 ms-auto px-5 m-auto" color="primary" mat-raised-button (click)="getTasks()" *ngIf="!eof">
+                <button class="text--desktop02 text--mobile03 text-center py-1 ms-auto px-5 m-auto" color="primary" mat-raised-button (click)="getTasks()" *ngIf="!eof">
                     <div class="d-flex m-auto text-center align-items-center">
-                        <div class="text--desktop03">
+                        <div class="text--desktop03 text--mobile02">
                             View more...
                         </div>
                     </div>
