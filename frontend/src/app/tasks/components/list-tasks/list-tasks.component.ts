@@ -13,9 +13,13 @@ import { Router } from '@angular/router';
 })
 export class ListTasksComponent implements OnInit {
     public tasks: TaskDto[] = [];
+    private cursor: string | null = null;
+    private limit: number = 3;
     public statuses: TaskStatusDto[] = [];
     public ready: boolean = false;
     public loading: boolean = false;
+    public isListEmpty: boolean = false;
+    public eof: boolean = false;
 
     constructor(private server: ServerService,
         private router: Router) { }
@@ -27,11 +31,19 @@ export class ListTasksComponent implements OnInit {
         ]).then(() => this.ready = true);
     }
 
-    private async getTasks(): Promise<void> {
+    public async getTasks(): Promise<void> {
         try {
             this.loading = true;
-            this.tasks = await this.server.getTasks();
-            console.log(this.tasks);
+            const { tasks, cursor } = await this.server.getTasks({ cursor: this.cursor || '', limit: this.limit });
+        
+            this.isListEmpty = tasks.length === 0 && !this.cursor;
+        
+            this.tasks = [...this.tasks, ...tasks];
+            this.cursor = cursor;
+
+            if (!cursor) {
+                this.eof = true;
+            }
         } catch (ex: any) {
             console.error(ex);
         } finally {

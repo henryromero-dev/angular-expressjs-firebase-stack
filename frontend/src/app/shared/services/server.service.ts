@@ -71,9 +71,9 @@ export class ServerService {
         this.user = null;
     }
 
-    public async getTasks(): Promise<any> {
+    public async getTasks({limit, cursor}: {limit: number, cursor: string}): Promise<any> {
         try {
-            const res = await firstValueFrom(this.http.get(environment.API_URL + '/api/tasks', {
+            const res = await firstValueFrom(this.http.get(environment.API_URL + `/api/tasks?limit=${limit}&cursor=${cursor}`, {
                 headers: {
                     authorization: `Bearer ${this._accessToken}`
                 }

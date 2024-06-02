@@ -3,7 +3,6 @@ import { db } from '../config/firebase.config';
 import { Task } from '../entities/task.entity';
 import { TaskStatus } from '../entities/task-status.entity';
 
-
 export namespace TaskController {
     export const Get = async (req: Request, res: Response) => {
         try {
@@ -33,17 +32,27 @@ export namespace TaskController {
     export const List = async (req: Request, res: Response) => {
         try {
             const userId = (<any>req)['uId'];
-            const cursor = req.query.cursor || null;
-            const limit = <number>(req.query.limit || 3);
+            let cursor: any = req.query.cursor || null;
+            const limit = +(req.query.limit || 3);
 
             const tasksRef = db.collection('tasks');
-            const snapshot = await tasksRef.limit(limit)
-            .where('visibility', 'in', ['', userId])
-            .orderBy('createdOn', 'desc')
-           // .startAfter(cursor)
-            .get();
+            let q = tasksRef.orderBy('createdOn', 'desc')
+            .where('visibility', 'in', ['', userId]);
 
+            if (cursor) {
+                q = q.startAfter(+cursor);
+            }
+
+            q = q.limit(limit)
+
+            const snapshot = await q.get();
             const tasks = <Task[]>snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            if (tasks.length >= limit) {
+                cursor = tasks[tasks.length - 1].createdOn;
+            } else {
+                cursor = null;
+            }
 
             for (const task of tasks) {
                 task.createdOn = new Date(task.createdOn);
@@ -56,7 +65,10 @@ export namespace TaskController {
                 }
             }
 
-            res.status(200).json(tasks);
+            res.status(200).json({
+                tasks,
+                cursor
+            });
         } catch (error: any) {
             res.status(500).json({ error: error.message});
         }
