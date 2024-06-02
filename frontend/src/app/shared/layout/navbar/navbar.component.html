@@ -1,0 +1,17 @@
+<mat-toolbar>
+    <div class="d-flex w-100 justify-content-between align-items-center">
+        <div class="d-flex align-items-center w-100">
+            <mat-icon *ngIf="isEditTaskModule" class="text--desktop03 text--white h-auto cursor-pointer" (click)="goTasksList()">keyboard_backspace</mat-icon>
+            <mat-icon *ngIf="isEditTasksModule" class="text--desktop03 text--white h-auto">list</mat-icon>
+            <h5 class="text--desktop03 text--white mb-0">
+                Task Manager
+            </h5>
+            <button mat-flat-button class="ms-auto outline__button text--white px-5 d-flex" (click)="logout()">
+                <mat-icon class="text--desktop03 me-1">logout</mat-icon>
+                <div class="text--desktop03">
+                    Logout
+                </div>
+            </button>
+        </div>
+    </div>
+</mat-toolbar>

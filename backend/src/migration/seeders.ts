@@ -6,7 +6,7 @@ export namespace Seeders {
         try {
             const roles = [{ 
                 name: 'client', 
-                permissions: [AppPermissions.READ_TASK, AppPermissions.CREATE_TASK, AppPermissions.UPDATE_TASK, AppPermissions.DELETE_TASK]
+                permissions: [AppPermissions.READ_TASK, AppPermissions.CREATE_TASK, AppPermissions.UPDATE_TASK, AppPermissions.DELETE_TASK, AppPermissions.READ_TASK_STATUS]
             }, {
                 name: 'admin',
                 permissions: AppPermissions.ALL
@@ -26,28 +26,36 @@ export namespace Seeders {
         try {
             const taskStatuses = [{ 
                 name: 'new', 
-                description: 'New'
+                description: 'New',
+                sortOrder: 0
             }, {
                 name: 'in-progress',
-                description: 'In Progress'
+                description: 'In Progress',
+                sortOrder: 1
             }, {
                 name: 'merge-request',
-                description: 'Merge Request'
+                description: 'Merge Request',
+                sortOrder: 2
             }, {
                 name: 'unit-test',
-                description: 'Unit Test'
+                description: 'Unit Test',
+                sortOrder: 3
             }, {
                 name: 'in-testing',
-                description: 'In Testing'
+                description: 'In Testing',
+                sortOrder: 4
             }, {
                 name: 'tested',
-                description: 'Tested'
+                description: 'Tested',
+                sortOrder: 5
             }, {
                 name: 'done',
-                description: 'Done'
+                description: 'Done',
+                sortOrder: 6
             }, {
                 name: 'canceled',
-                description: 'Canceled'
+                description: 'Canceled',
+                sortOrder: 7
             }];
     
             for (const taskStatus of taskStatuses) {

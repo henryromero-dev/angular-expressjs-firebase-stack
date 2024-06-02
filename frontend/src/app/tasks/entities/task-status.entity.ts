@@ -1,4 +1,4 @@
-export interface TaskStatus {
+export interface TaskStatusDto {
     id: string;
     name: string;
     description: string;

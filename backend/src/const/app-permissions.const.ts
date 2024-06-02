@@ -14,6 +14,8 @@ export namespace AppPermissions {
     export const DELETE_TASK = 'delete.task';
     export const READ_TASK = 'read.task';
 
+    export const READ_TASK_STATUS = 'read.task';
+
     export const ALL = [CREATE_ROLE, UPDATE_ROLE, DELETE_ROLE, READ_ROLE, CREATE_USER, UPDATE_USER, DELETE_USER, READ_USER, CREATE_TASK, UPDATE_TASK, DELETE_TASK, READ_TASK]
 }
 

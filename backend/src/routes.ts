@@ -25,4 +25,6 @@ export const Routes = (router: Router) => {
     router.post('/api/tasks', AuthMiddleware, PermissionsMiddleware(AppPermissions.CREATE_TASK), TaskController.Create);
     router.put('/api/tasks/:id', AuthMiddleware, PermissionsMiddleware(AppPermissions.UPDATE_TASK), TaskController.Update);
     router.delete('/api/tasks/:id', AuthMiddleware, PermissionsMiddleware(AppPermissions.DELETE_TASK), TaskController.Delete);
+
+    router.get('/api/task-statuses', AuthMiddleware, PermissionsMiddleware(AppPermissions.READ_TASK_STATUS), TaskController.ListStatuses);
 };

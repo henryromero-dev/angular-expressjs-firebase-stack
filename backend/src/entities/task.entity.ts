@@ -10,4 +10,5 @@ export interface Task {
     updatedBy: string;
     statusId: string;
     status: TaskStatus;
+    visibility: string;
 }

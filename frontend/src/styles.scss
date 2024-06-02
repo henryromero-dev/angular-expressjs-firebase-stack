@@ -1,0 +1,16 @@
+@import './theme.scss';
+@import './styles/font.scss';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.content--standard {
+    height: 100vh;
+    display: block;
+    background: #f9f9f9;
+    overflow: auto;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

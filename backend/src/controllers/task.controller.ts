@@ -3,6 +3,7 @@ import { db } from '../config/firebase.config';
 import { Task } from '../entities/task.entity';
 import { TaskStatus } from '../entities/task-status.entity';
 
+
 export namespace TaskController {
     export const Get = async (req: Request, res: Response) => {
         try {
@@ -11,8 +12,17 @@ export namespace TaskController {
             const snapshot = await tasksRef.doc(id.toString()).get();
             const task = <Task>{ id: snapshot.id, ...snapshot.data() };
 
+            task.createdOn = new Date(task.createdOn);
+            if (task.updatedOn) {
+                task.updatedOn = new Date(task.updatedOn);
+            }
+
             const statusRef = await db.collection('statuses').doc(task.statusId).get();
             task.status = <TaskStatus>statusRef.data();
+
+            if (task.visibility !== '') {
+                task.visibility = 'private';
+            }
 
             res.status(200).json(task);
         } catch (error) {
@@ -22,12 +32,17 @@ export namespace TaskController {
 
     export const List = async (req: Request, res: Response) => {
         try {
-            const page = <number>(req.query.page || 1);
-            const pageSize = <number>(req.query.pageSize || 10);
-            const offset = (page - 1) * pageSize;
+            const userId = (<any>req)['uId'];
+            const cursor = req.query.cursor || null;
+            const limit = <number>(req.query.limit || 3);
 
             const tasksRef = db.collection('tasks');
-            const snapshot = await tasksRef.limit(pageSize).offset(offset).get();
+            const snapshot = await tasksRef.limit(limit)
+            .where('visibility', 'in', ['', userId])
+            .orderBy('createdOn', 'desc')
+           // .startAfter(cursor)
+            .get();
+
             const tasks = <Task[]>snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
             for (const task of tasks) {
@@ -35,11 +50,15 @@ export namespace TaskController {
                 if (task.updatedOn) {
                     task.updatedOn = new Date(task.updatedOn);
                 }
+
+                if (task.visibility !== '') {
+                    task.visibility = 'private';
+                }
             }
 
             res.status(200).json(tasks);
-        } catch (error) {
-            res.status(500).json({ error });
+        } catch (error: any) {
+            res.status(500).json({ error: error.message});
         }
     }
 
@@ -54,9 +73,11 @@ export namespace TaskController {
                 return res.status(400).json({ error: 'Status is required' });
             }
 
+            const visibility: string = req.body.visibility !== '' ? (<any>req)['uId'] : '';
+
             const userId = (<any>req)['uId'];
 
-            const taskRef = await db.collection('tasks').add({ title, description, statusId, updatedOn: null, createdOn: new Date().getTime(), createdBy: userId, updatedBy: null });
+            const taskRef = await db.collection('tasks').add({ title, description, statusId, visibility, updatedOn: null, createdOn: new Date().getTime(), createdBy: userId, updatedBy: null });
 
             res.json({ id: taskRef.id, ...req.body });
         } catch (error: any) {
@@ -74,12 +95,21 @@ export namespace TaskController {
             } else if (!statusId) {
                 return res.status(400).json({ error: 'Status is required' });
             }
-
             const userId = (<any>req)['uId'];
             const id = req.params.id;
 
+            const existsRef = db.collection('tasks');
+            const snapshot = await existsRef.doc(id.toString()).get();
+            const task = <Task>{ id: snapshot.id, ...snapshot.data() };
+
+            if (task.createdBy !== userId && req.body.visibility !== '') {
+                return res.status(403).json({ error: 'You are not allowed to change this visibility' });
+            }
+       
+            const visibility: string = req.body.visibility !== '' ? (<any>req)['uId'] : '';
+
             const taskRef = db.collection('tasks').doc(id);
-            await taskRef.update({ title, description, statusId, updatedOn: new Date().getTime(), updatedBy: userId });
+            await taskRef.update({ title, description, statusId, visibility, updatedOn: new Date().getTime(), updatedBy: userId });
 
             res.json({ id, ...req.body });
         } catch (error: any) {
@@ -97,6 +127,18 @@ export namespace TaskController {
             res.json({ id });
         } catch (error: any) {
             res.status(500).json({ error: error.message });
+        }
+    }
+
+    export const ListStatuses = async (req: Request, res: Response) => {
+        try {
+            const statusesRef = db.collection('taskStatuses');
+            const snapshot = await statusesRef.get();
+            const statuses = <TaskStatus[]>snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            res.status(200).json(statuses);
+        } catch (error) {
+            res.status(500).json({ error });
         }
     }
 }
