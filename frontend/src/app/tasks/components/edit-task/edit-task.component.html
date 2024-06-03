@@ -20,7 +20,7 @@
                 <input matInput formControlName="title" required>
             </mat-form-field>
             <div class="col-3 col-md-4 ps-md-4 mb-3 ps-3 d-flex flex-column" *ngIf="ui.isMobileWidth">
-                <mat-label class="text--mobile03">Status <small class="text--desktop03">({{selectedStatus?.description}})</small></mat-label>
+                <mat-label class="text--mobile03">Status <small class="text--desktop03">({{selectedStatus.description}})</small></mat-label>
                 <mat-checkbox formControlName="statusId"></mat-checkbox>
             </div>
             <mat-form-field class="col-12 col-md-4 ps-md-4">
@@ -35,7 +35,7 @@
                 </mat-select>
             </mat-form-field>
             <div class="col-12 col-md-4 ps-md-4 mb-3" *ngIf="!ui.isMobileWidth">
-                <mat-label class="text--desktop03">Status <small class="text--desktop03">({{selectedStatus?.description}})</small></mat-label>
+                <mat-label class="text--desktop03">Status <small class="text--desktop03">({{selectedStatus.description}})</small></mat-label>
                 <mat-checkbox formControlName="statusId"></mat-checkbox>
             </div>
         </div>

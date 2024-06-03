@@ -94,4 +94,8 @@ export class ListTasksComponent implements OnInit {
             this.loading = false;
         }
     }
+
+    public getTaskMidDescription(task: TaskDto, length: number = 50): string {
+        return task.description.length > length ? task.description.substr(0, length) + '...' : task.description;
+    }
 }

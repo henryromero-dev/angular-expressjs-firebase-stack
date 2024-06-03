@@ -55,8 +55,8 @@
                     </p>
                 </div>
                 <div class="col-md-2 px-3" *ngIf="!ui.isMobileWidth">
-                    <p class="text--desktop03 text--mobile02">
-                        {{ task.description }}
+                    <p class="text--desktop03 text--mobile02 cut__text" title="{{getTaskMidDescription(task, 200)}}">
+                        {{getTaskMidDescription(task)}}
                     </p>
                 </div>
                 <div class="col-md-2 col-4 px-3 d-flex align-items-center">
