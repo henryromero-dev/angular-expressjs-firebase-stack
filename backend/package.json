@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start": "nodemon index.ts",
-    "devStart": "nodemon index.ts",
+    "start": "nodemon dist/main.js",
+    "dev": "nodemon index.ts",
     "build": "webpack"
   },
   "dependencies": {

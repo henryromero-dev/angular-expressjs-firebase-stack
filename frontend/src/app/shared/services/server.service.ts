@@ -3,7 +3,7 @@ import { UserDto } from '../entities/user.entity';
 import { jwtDecode } from 'jwt-decode';
 import { HttpClient } from '@angular/common/http';
 import { LoginDto } from '../../account/entities/login.entity';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { firstValueFrom } from 'rxjs';
 import { NotificationService } from './notification.service';
 import { CacheService } from './cache.service';
@@ -214,6 +214,7 @@ export class ServerService {
                 }
                 throw ex;
             case 401:
+                this.logout();
                 throw ex;
             case 403:
                 if (ex.error.error) {

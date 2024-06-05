@@ -7,6 +7,7 @@ import { AuthController } from './controllers/auth.controller';
 import { TaskController } from './controllers/task.controller';
 
 export const Routes = (router: Router) => {
+    // It should be just "/users/email" and "/users" instead of "login" and "register" but I prefer to keep it traditional
     router.post('/api/register', AuthController.Register);
     router.post('/api/login', AuthController.Login);
     router.post('/api/logout', AuthMiddleware, AuthController.Logout);
