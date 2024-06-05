@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true, // Enable interoperability between CommonJS and ES Modules
+        "target": "es6", // Or a newer version based on your Node.js support
+        "module": "commonjs", // Or "esnext" if you prefer ES modules
+        "sourceMap": true, // Enable source maps for debugging
+        "outDir": "./dist", // Output directory for compiled JavaScript files
+        "strict": true // Enable strict type checking (recommended)
+      // ... other options as needed
+    },
+    "include": [
+        "src/**/*.ts"
+    ] // Include all TypeScript files in your 'src' directory
+}

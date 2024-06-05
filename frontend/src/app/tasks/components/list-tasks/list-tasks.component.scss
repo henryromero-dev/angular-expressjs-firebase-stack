@@ -1,0 +1,51 @@
+p {
+    margin: 0;
+}
+.task__header {
+    background-color: #454545;
+    border: 1px solid #cdcdcd;
+    border-radius: 5px;
+    color: white;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3);
+}
+.task__item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.task__status {
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #16a3e4;
+    width: 100px;
+    text-align: center;
+    &--pending {
+        background-color: #16a3e4;
+    }
+    &--completed {
+        background-color: #4caf50;
+    }
+    /*
+    You can add more status classes here
+    &--new {
+        background-color: #ff9800;
+    }
+    &--canceled {
+        background-color: #f44336;
+    }
+    &--merge-request {
+        background-color: #3b092f;
+    }
+    &--unit-test {
+        background-color: #9c27b0;
+    }
+    &--in-testing {
+        background-color: #153249;
+    }
+    &--tested {
+        background-color: #8bc34a;
+    }*/
+}
+.cut__text {
+    word-break: break-all;
+}

@@ -1,0 +1,65 @@
+<div class="d-flex flex-column w-100 p-md-5 p-3">
+    <div class="d-flex flex-column w-100">
+        <div class="d-flex w-100 align-items-center mb-2">
+            <mat-icon class="text--heading04">edit</mat-icon>
+            <h5 class="text--heading04 mb-0" *ngIf="taskId">
+                Edit task
+            </h5>
+            <h5 class="text--heading04 mb-0" *ngIf="!taskId">
+                Create task
+            </h5>
+        </div>
+        <p class="text--desktop03 text--mobile03 text--lightgrey01">
+            Marked fields are required
+        </p>
+    </div>
+    <div class="d-flex flex-column mt-md-4 mt-2" *ngIf="ready && !loading && form" [@fadeIn] [formGroup]="form">
+        <div class="d-flex w-100 flex-wrap flex-md-nowrap">
+            <mat-form-field class="col-9 col-md-4 pe-md-4">
+                <mat-label>Title</mat-label>
+                <input matInput formControlName="title" required>
+            </mat-form-field>
+            <div class="col-3 col-md-4 ps-md-4 mb-3 ps-3 d-flex flex-column" *ngIf="ui.isMobileWidth">
+                <mat-label class="text--mobile03">Status <small class="text--desktop03">({{selectedStatus.description}})</small></mat-label>
+                <mat-checkbox formControlName="statusId"></mat-checkbox>
+            </div>
+            <mat-form-field class="col-12 col-md-4 ps-md-4">
+                <mat-label>Visibility</mat-label>
+                <mat-select formControlName="visibility">
+                    <mat-option value="">
+                        Public
+                    </mat-option>
+                    <mat-option value="private">
+                        Private
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="col-12 col-md-4 ps-md-4 mb-3" *ngIf="!ui.isMobileWidth">
+                <mat-label class="text--desktop03">Status <small class="text--desktop03">({{selectedStatus.description}})</small></mat-label>
+                <mat-checkbox formControlName="statusId"></mat-checkbox>
+            </div>
+        </div>
+        <mat-form-field class="mb-3">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" rows="5" required></textarea>
+        </mat-form-field>
+        <div class="d-flex justify-content-end">
+            <button mat-raised-button color="" class="px-4 py-1 me-2 transparent__button" (click)="cancel()">
+                <mat-icon>keyboard_backspace</mat-icon>
+                <div class="text--desktop03 text--mobile03">
+                    Back
+                </div>
+            </button>
+            <button mat-raised-button color="primary" (click)="saveTask()" class="px-4 py-1">
+                <mat-icon>save</mat-icon>
+                <div class="text--desktop03 text--mobile03">
+                    Save
+                </div>
+            </button>
+        </div>
+    </div>
+   
+    <div class="d-flex w-100 mt-5" *ngIf="loading || !ready">
+        <mat-spinner class="m-auto" [diameter]="44"></mat-spinner>
+    </div>
+</div>
